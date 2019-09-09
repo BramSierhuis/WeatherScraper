@@ -13,12 +13,12 @@ namespace WeatherScraper
         public double amountOfRain;
         public double windSpeedInKmh;
 
-        public Forecast(double temp, DateTime date, double amountOfRain, double windSpeedInMph)
+        public Forecast(double temp, DateTime date, double amountOfRain, double windSpeedInMps)
         {
             this.temp = temp;
             this.date = date;
             this.amountOfRain = amountOfRain;
-            windSpeedInKmh = windSpeedInMph * 1.609344;
+            windSpeedInKmh = windSpeedInMps * 3.6;
         }
 
         public void PrintAll()

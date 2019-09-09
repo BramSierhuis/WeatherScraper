@@ -26,7 +26,7 @@ namespace WeatherScraper
         static string[] Scopes = { CalendarService.Scope.CalendarReadonly };
         static string ApplicationName = "Google Calendar API .NET Quickstart";
 
-        static DateTime tomorrow = DateTime.Now.AddDays(1);
+        static DateTime tomorrow = DateTime.Now.AddDays(0);
 
         static Lesson firstLesson;
         static Forecast forecast;
@@ -168,7 +168,7 @@ namespace WeatherScraper
                             double temp = double.Parse(temp_node.Attributes["value"].Value, CultureInfo.InvariantCulture);
 
                             XmlNode wind_node = time_node.SelectSingleNode("windSpeed");
-                            double windSpeedInMph = double.Parse(wind_node.Attributes["mps"].Value, CultureInfo.InvariantCulture);
+                            double windSpeedInMps = double.Parse(wind_node.Attributes["mps"].Value, CultureInfo.InvariantCulture);
 
                             //Check if the rain node is empty, if so set rain as 0
                             try
@@ -181,7 +181,7 @@ namespace WeatherScraper
                                 precipitation = 0;
                             }
 
-                            forecast = new Forecast(temp, forecastTime, precipitation, windSpeedInMph);
+                            forecast = new Forecast(temp, forecastTime, precipitation, windSpeedInMps);
                         }
                         catch (Exception e)
                         {
