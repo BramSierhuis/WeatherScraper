@@ -156,6 +156,9 @@ namespace WeatherScraper
                         XmlNode temp_node = time_node.SelectSingleNode("temperature");
                         double temp = double.Parse(temp_node.Attributes["value"].Value, CultureInfo.InvariantCulture);
 
+                        XmlNode wind_node = time_node.SelectSingleNode("windSpeed");
+                        double windSpeedInMph = double.Parse(wind_node.Attributes["mps"].Value, CultureInfo.InvariantCulture);
+
                         //Check if the rain node is empty, if so set rain as 0
                         try
                         {
@@ -167,7 +170,7 @@ namespace WeatherScraper
                             precipitation = 0;
                         }
 
-                        Forecast forecast = new Forecast(temp, forecastTime, precipitation);
+                        Forecast forecast = new Forecast(temp, forecastTime, precipitation, windSpeedInMph);
                         forecasts.Add(forecast);
                     }
                     catch (Exception e)
