@@ -10,7 +10,6 @@ namespace WeatherScraper
     {
         public string name;
         public DateTime date;
-        public string time;
         public string location;
 
         public Lesson(string name, DateTime date, string location)
@@ -22,7 +21,7 @@ namespace WeatherScraper
 
         public void PrintAll()
         {
-            Console.WriteLine(name + " " + date + " " + time + " " + location);
+            Console.WriteLine(name + " " + date + " " + location);
         }
     }
 }

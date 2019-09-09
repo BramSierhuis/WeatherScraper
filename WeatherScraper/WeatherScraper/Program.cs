@@ -19,34 +19,34 @@ namespace WeatherScraper
         private const string ForecastUrl = //The url used to get the forecasts
             "http://api.openweathermap.org/data/2.5/forecast?q=Heemskerk,nl@&mode=xml&units=metric&APPID=" + API_KEY;
 
+        static double minTemp = 5;
+        static double maxWindSpeed = 60;
+        static double maxRain = 5;
+
         static string[] Scopes = { CalendarService.Scope.CalendarReadonly };
         static string ApplicationName = "Google Calendar API .NET Quickstart";
 
-        static List<Lesson> lessons = new List<Lesson>(); //All the upcoming lessons
-        static List<Forecast> forecasts = new List<Forecast>(); //The forecasts of tomorrow
-
         static DateTime tomorrow = DateTime.Now.AddDays(1);
 
+        static Lesson firstLesson;
+        static Forecast forecast;
 
+        
         static void Main(string[] args)
         {
             GetUpcommingLessons(); //Add all upcoming lessons to the list
-            GetForecasts(); //Add all forecasts to the list
+            GetForecast(); //Add all forecasts to the list
 
-            foreach(Lesson l in lessons)
-            {
-                l.PrintAll();
-            }
+            firstLesson.PrintAll();
+            forecast.PrintAll();
+            Console.WriteLine();
 
-            foreach(Forecast f in forecasts)
-            {
-                f.PrintAll();
-            }
+            CheckIfMotorcycleWeather();
 
             Console.ReadKey();
         }
 
-        static void GetForecasts()
+        static void GetForecast()
         {
             using (WebClient client = new WebClient())
             {
@@ -113,14 +113,16 @@ namespace WeatherScraper
                     try
                     {
                         DateTime date = (DateTime)eventItem.Start.DateTime; //Get the date and time of the event
+                        string classRoom = eventItem.Location.ToString(); //The classroom of the event
 
-                        if (date.Date == tomorrow.Date)
+                        string identifier = classRoom.Substring(0, 3);
+
+                        if (date.Date == tomorrow.Date && identifier == "HAA")
                         { //We only care about the lessons of tomorrow
                             string name = eventItem.Summary; //The name of the planned event
-                            string classRoom = eventItem.Location.ToString(); //The classroom of the event
 
-                            Lesson lesson = new Lesson(name, date, classRoom);
-                            lessons.Add(lesson);
+                            firstLesson = new Lesson(name, date, classRoom);
+                            return;
                         }
                     }
                     catch (Exception e)
@@ -137,6 +139,8 @@ namespace WeatherScraper
 
         static void ExtractForecast(string xml)
         {
+            DateTime lesStart = firstLesson.date;
+
             XmlDocument xml_doc = new XmlDocument();
             xml_doc.LoadXml(xml);
 
@@ -151,33 +155,56 @@ namespace WeatherScraper
                 {
                     double precipitation;
 
-                    try
+                    TimeSpan diff = lesStart.Subtract(forecastTime);
+
+                    TimeSpan maxDifference = new TimeSpan(0, 3, 0, 0, 0);
+                    TimeSpan zero = new TimeSpan(0);
+
+                    if (diff >= zero && diff <= maxDifference)
                     {
-                        XmlNode temp_node = time_node.SelectSingleNode("temperature");
-                        double temp = double.Parse(temp_node.Attributes["value"].Value, CultureInfo.InvariantCulture);
-
-                        XmlNode wind_node = time_node.SelectSingleNode("windSpeed");
-                        double windSpeedInMph = double.Parse(wind_node.Attributes["mps"].Value, CultureInfo.InvariantCulture);
-
-                        //Check if the rain node is empty, if so set rain as 0
                         try
                         {
-                            XmlNode precipitation_node = time_node.SelectSingleNode("precipitation");
-                            precipitation = double.Parse(precipitation_node.Attributes["value"].Value, CultureInfo.InvariantCulture);
-                        }
-                        catch
-                        {
-                            precipitation = 0;
-                        }
+                            XmlNode temp_node = time_node.SelectSingleNode("temperature");
+                            double temp = double.Parse(temp_node.Attributes["value"].Value, CultureInfo.InvariantCulture);
 
-                        Forecast forecast = new Forecast(temp, forecastTime, precipitation, windSpeedInMph);
-                        forecasts.Add(forecast);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
+                            XmlNode wind_node = time_node.SelectSingleNode("windSpeed");
+                            double windSpeedInMph = double.Parse(wind_node.Attributes["mps"].Value, CultureInfo.InvariantCulture);
+
+                            //Check if the rain node is empty, if so set rain as 0
+                            try
+                            {
+                                XmlNode precipitation_node = time_node.SelectSingleNode("precipitation");
+                                precipitation = double.Parse(precipitation_node.Attributes["value"].Value, CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                                precipitation = 0;
+                            }
+
+                            forecast = new Forecast(temp, forecastTime, precipitation, windSpeedInMph);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
                     }
                 }
+            }
+        }
+
+        static void CheckIfMotorcycleWeather()
+        {
+            double windSpeedInKmh = forecast.windSpeedInKmh;
+            double temp = forecast.temp;
+            double amountOfRain = forecast.amountOfRain;
+
+            if(windSpeedInKmh > maxWindSpeed || temp < minTemp || amountOfRain > maxRain)
+            {
+                Console.WriteLine("You should use the OV");
+            }
+            else
+            {
+                Console.WriteLine("It is safe to take the bike");
             }
         }
     }

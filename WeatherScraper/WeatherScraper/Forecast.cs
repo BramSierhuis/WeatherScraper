@@ -23,7 +23,7 @@ namespace WeatherScraper
 
         public void PrintAll()
         {
-            Console.WriteLine(date + " t:" + temp + " r:" + amountOfRain + " w:" + windSpeedInKmh);
+            Console.WriteLine(date + " t:" + temp.ToString("0.0") + " r:" + amountOfRain.ToString("0.000") + " w:" + windSpeedInKmh.ToString("0.000"));
         }
     }
 }
