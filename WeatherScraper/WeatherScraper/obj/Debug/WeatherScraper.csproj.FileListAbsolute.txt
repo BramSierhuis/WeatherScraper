@@ -9,7 +9,6 @@ C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Html
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\HtmlAgilityPack.xml
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\obj\Debug\WeatherScraper.csproj.CopyComplete
-C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\credentials.json
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Google.Apis.Auth.dll
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Google.Apis.Auth.PlatformServices.dll
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Google.Apis.Calendar.v3.dll
@@ -26,3 +25,4 @@ C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Goog
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Google.Apis.Core.pdb
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Google.Apis.Core.xml
 C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Bram_Win10Edu\source\repos\WeatherScraper\WeatherScraper\bin\Debug\credentials.json

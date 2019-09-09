@@ -25,7 +25,7 @@ namespace WeatherScraper
         static List<Lesson> lessons = new List<Lesson>(); //All the upcoming lessons
         static List<Forecast> forecasts = new List<Forecast>(); //The forecasts of tomorrow
 
-        static DateTime tomorrow = DateTime.Now.AddDays(2);
+        static DateTime tomorrow = DateTime.Now.AddDays(1);
 
 
         static void Main(string[] args)
@@ -37,8 +37,6 @@ namespace WeatherScraper
             {
                 l.PrintAll();
             }
-
-            Console.WriteLine();
 
             foreach(Forecast f in forecasts)
             {
@@ -116,14 +114,14 @@ namespace WeatherScraper
                     {
                         DateTime date = (DateTime)eventItem.Start.DateTime; //Get the date and time of the event
 
-                        if (date.Date != tomorrow.Date) //We only care about the lessons of tomorrow
-                            return;
+                        if (date.Date == tomorrow.Date)
+                        { //We only care about the lessons of tomorrow
+                            string name = eventItem.Summary; //The name of the planned event
+                            string classRoom = eventItem.Location.ToString(); //The classroom of the event
 
-                        string name = eventItem.Summary; //The name of the planned event
-                        string classRoom = eventItem.Location.ToString(); //The classroom of the event
-
-                        Lesson lesson = new Lesson(name, date, classRoom);            
-                        lessons.Add(lesson);
+                            Lesson lesson = new Lesson(name, date, classRoom);
+                            lessons.Add(lesson);
+                        }
                     }
                     catch (Exception e)
                     {
