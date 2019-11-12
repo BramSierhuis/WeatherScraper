@@ -19,25 +19,26 @@ namespace WeatherScraper
         private const string ForecastUrl = //The url used to get the forecasts
             "http://api.openweathermap.org/data/2.5/forecast?q=Heemskerk,nl@&mode=xml&units=metric&APPID=" + API_KEY;
 
-        static double minTemp = 5;
-        static double maxWindSpeed = 60;
-        static double maxRain = 5;
+        const double MINTEMP = 5;
+        const double MAXWINDSPEED = 60;
+        const double MAXRAIN = 5;
+        const string AGENDA_ID = "l78s74l22lsjvlftqq69iptutaja5u0s@import.calendar.google.com";
 
         static string[] Scopes = { CalendarService.Scope.CalendarReadonly };
         static string ApplicationName = "Google Calendar API .NET Quickstart";
 
-        static DateTime tomorrow = DateTime.Now.AddDays(0);
+        static DateTime tomorrow = DateTime.Now.AddDays(1);
 
-        static Lesson firstLesson;
         static Forecast forecast;
+        static Lesson firstLesson;
 
-        
         static void Main(string[] args)
         {
             GetUpcommingLessons(); //Add all upcoming lessons to the list
             GetForecast(); //Add all forecasts to the list
 
             firstLesson.PrintAll();
+            Console.WriteLine();
             forecast.PrintAll();
             Console.WriteLine();
 
@@ -95,7 +96,7 @@ namespace WeatherScraper
             });
 
             // Define parameters of request.
-            EventsResource.ListRequest request = service.Events.List("primary");
+            EventsResource.ListRequest request = service.Events.List(AGENDA_ID);
             request.TimeMin = DateTime.Now;
             request.ShowDeleted = false;
             request.SingleEvents = true;
@@ -198,9 +199,9 @@ namespace WeatherScraper
             double temp = forecast.temp;
             double amountOfRain = forecast.amountOfRain;
 
-            if(windSpeedInKmh > maxWindSpeed || temp < minTemp || amountOfRain > maxRain)
+            if(windSpeedInKmh > MAXWINDSPEED || temp < MINTEMP || amountOfRain > MAXRAIN)
             {
-                Console.WriteLine("You should use the OV");
+                Console.WriteLine("You should use the Public Transport");
             }
             else
             {

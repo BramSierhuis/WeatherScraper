@@ -21,7 +21,7 @@ namespace WeatherScraper
 
         public void PrintAll()
         {
-            Console.WriteLine(name + " " + date + " " + location);
+            Console.WriteLine("Lesson: " + name + " " + date + " " + location);
         }
     }
 }
